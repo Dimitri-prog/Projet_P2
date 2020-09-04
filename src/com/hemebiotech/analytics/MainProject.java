@@ -3,8 +3,8 @@ package com.hemebiotech.analytics;
 import java.util.List;
 import java.util.Map;
 
-/** classe de démarrage du projet */
 
+/** classe de démarrage du projet */
 public class MainProject {
 
 	public static void main(String[] args) throws Exception {
