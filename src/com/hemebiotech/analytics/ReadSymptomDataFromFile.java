@@ -11,21 +11,22 @@ import java.util.List;
 import java.util.Map;
 
 public class ReadSymptomDataFromFile implements ISymptomReader {
-	/** méthode permettant la lecture des symptômes */
-	public List<String> getSymptoms(String symptômes) {
-		/** liste qui va recevoir les symptômes lus */
-		List<String> resulta = new ArrayList<String>();
 
-		if (symptômes != null) {
+	@Override
+	public List<String> getSymptoms(String symptoms) {
+		// liste qui va recevoir les symptômes lus
+		List<String> result = new ArrayList<String>();
+
+		if (symptoms != null) {
 			try {
-				BufferedReader reader = new BufferedReader(new FileReader(symptômes));
+				BufferedReader reader = new BufferedReader(new FileReader(symptoms));
 				String line = reader.readLine();
 				while (line != null) {
-					resulta.add(line);
+					result.add(line);
 					line = reader.readLine();
 				}
-				/** classement des symptômes par ordre alphabétique */
-				Collections.sort(resulta);
+				// classement des symptômes par ordre alphabétique
+				Collections.sort(result);
 
 				reader.close();
 
@@ -34,16 +35,16 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 			}
 		}
 
-		return resulta;
+		return result;
 	}
 
-	/** méthode qui retourne le nombre d'occurrences des symptômes */
+	@Override
 	public Map<String, Integer> getSymptomsWithOccurences(List<String> symptoms) {
 		Map<String, Integer> map = new LinkedHashMap<String, Integer>();
-		/** parcours la liste des symptômes passer en paramètre de la méthode */
+		// parcours la liste des symptômes passer en paramètre de la méthode
 		for (String symptom : symptoms) {
 			if (map.containsKey(symptom) == false) {
-				/** copie la liste dans la carte */
+				// copie la liste dans la carte
 				map.put(symptom, Collections.frequency(symptoms, symptom));
 			}
 		}
@@ -51,22 +52,18 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 		return map;
 	}
 
-	/**
-	 * méthode qui copie les symptômes dans répertoire personnel de l'utilisateur
-	 */
+	@Override
 	public void writeSymptomsAndOccurences(Map<String, Integer> mapSymptomsOccurences) throws IOException {
-		/** récupère le répertoire personnel de l'utilisateur */
+		// Récupère le répertoire personnel de l’utilisateur.
 		String currentUsersHomeDir = System.getProperty("user.home");
 		String path = currentUsersHomeDir + System.getProperty("file.separator") + "result.out";
-		/**
-		 * objet permettant de copier le fichier dans le répertoire personnel de
-		 * l'utilisateur
-		 */
+		// objet permettant de copier le fichier dans le répertoire personnel
+		// de l'utilisateur
 		FileWriter writer = new FileWriter(path);
 		if (mapSymptomsOccurences != null && !mapSymptomsOccurences.isEmpty()) {
 			mapSymptomsOccurences.forEach((key, value) -> {
 				try {
-					/** copie le fichier dans le répertoire personnel de l'utilisateur */
+					// copie le fichier dans le répertoire personnel de l'utilisateur
 					writer.write(key + "=" + value);
 					writer.write(System.getProperty("line.separator"));
 				} catch (IOException e) {
@@ -74,7 +71,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				}
 			});
 		} else {
-			writer.write("aucun symptome n'a été trouvé");
+			writer.write("aucun symptôme n'a été trouvé");
 		}
 		writer.close();
 		System.out.println("le fichier de sortie se trouve: " + path);
