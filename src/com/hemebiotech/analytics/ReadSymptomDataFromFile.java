@@ -2,7 +2,6 @@ package com.hemebiotech.analytics;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,34 +36,10 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 		Map<String, Integer> map = new LinkedHashMap<>();
 		// parcours la liste des symptômes passés en paramètre de la méthode
 		for (String symptom : symptoms) {
-            // copie la liste dans la map
+			// copie la liste dans la map
 			map.put(symptom, Collections.frequency(symptoms, symptom));
 		}
 		return map;
 	}
 
-	@Override
-	public void writeSymptomsAndOccurences(Map<String, Integer> mapSymptomsOccurences) throws IOException {
-		// Récupérer l'adresse du répertoire personnel de l’utilisateur.
-		String currentUsersHomeDir = System.getProperty("user.home");
-		String path = currentUsersHomeDir + System.getProperty("file.separator") + "result.out";
-		// objet permettant de copier le fichier dans le répertoire personnel de
-		// l'utilisateur
-		FileWriter writer = new FileWriter(path);
-		if (mapSymptomsOccurences != null && !mapSymptomsOccurences.isEmpty()) {
-			mapSymptomsOccurences.forEach((key, value) -> {
-				try {
-					// Ecrire dans le fichier la maladie et son nombre d'occurrence.
-					writer.write(key + "=" + value);
-					writer.write(System.getProperty("line.separator"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
-		} else {
-			writer.write("aucun symptôme n'a été trouvé");
-		}
-		writer.close();
-		System.out.println("le fichier de sortie se trouve: " + path);
-	}
 }
